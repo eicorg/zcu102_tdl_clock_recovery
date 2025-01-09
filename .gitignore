@@ -1,0 +1,7 @@
+prj
+out
+*.log
+.*
+.Xil
+!.gitignore
+src/yocto/*
