@@ -338,7 +338,6 @@ module tdl_wrapper (
     rxdata_aligner rxdata_aligner_inst (
         .rxusrclk2          (rxusrclk2_out      ),
         .rst                (~reset_rx_done_out ),
-        .rxcdrlock          (rxcdrlock_int      ),
         .rxctrl1            (rxctrl1_out        ),
         .rxctrl2            (rxctrl2_out        ),
         .rxctrl3            (rxctrl3_out        ),

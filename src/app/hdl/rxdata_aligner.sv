@@ -17,7 +17,6 @@
 module rxdata_aligner (
     input  logic        rxusrclk2,
     input  logic        rst,
-    input  logic        rxcdrlock,
     input  logic [15:0] rxctrl1,
     input  logic [7:0]  rxctrl2,
     input  logic [7:0]  rxctrl3,
@@ -32,7 +31,6 @@ module rxdata_aligner (
 
     logic [15:0] timeout_cnt;
     logic [3:0] comma_cnt;
-    logic rxcdrlock_sync;
     
     assign rxcommadeten     = 1'b1;
     assign rxmcommaalignen  = 1'b0;
@@ -48,7 +46,7 @@ module rxdata_aligner (
             comma_cnt <= 4'b0;
             timeout_cnt <= 16'b0;
         end
-        else if (~rxcdrlock_sync | |rxctrl1 | |rxctrl3 | &timeout_cnt) begin
+        else if (|rxctrl1 | |rxctrl3 | &timeout_cnt) begin
             comma_cnt <= 4'b0;
             timeout_cnt <= timeout_cnt + 1;
         end
@@ -70,13 +68,5 @@ module rxdata_aligner (
             bitslip <= &timeout_cnt;
         end
     end
-
-    // Synchronize RXCDRLOCK signal
-    (* DONT_TOUCH = "TRUE" *)
-    bit_synchronizer bit_synchronizer_inst (
-        .clk_in (rxusrclk2),
-        .i_in   (rxcdrlock),
-        .o_out  (rxcdrlock_sync)
-    );
 
 endmodule
